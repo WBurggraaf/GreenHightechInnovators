@@ -3,14 +3,13 @@ import { ConfigParams, PluginParams } from '../../types/common';
 import { Vehicle } from './types/vehicle';
 import { Battery } from './types/battery';
 import { MaterialQuantity } from './interfaces/materialQuantity';
+import { CriticalMaterialWasteOutput } from './interfaces/CriticalMaterialWasteOutput';
 
 export const VehicleEmbodiedCarbon = (globalConfig?: ConfigParams): PluginInterface => {
     const metadata = { kind: 'execute' };
 
-    async function execute(inputs: PluginParams[], config?: ConfigParams) {
+    async function execute(inputs: PluginParams[]) {
         return inputs.map(input => {
-
-            console.log(JSON.stringify(config));
 
             const vehicle = Vehicle.toModel(input);
             const battery = Battery.toModel(input);
@@ -36,10 +35,9 @@ export const VehicleEmbodiedCarbon = (globalConfig?: ConfigParams): PluginInterf
         });
     }
 
-    function calculateEmbodiedEmissionsInCO2e(amount: number, emissionsFactor: number): number {
-        return amount * emissionsFactor; // g-CO2e
-    }
-
+    /**
+     * Calculates carbon emissions that are emitted while producing the vehicle
+     */
     function calculateEmbodiedEmissions(materials: MaterialQuantity[], emissionsFactors: Object): number {
         let totalEmissions = 0;
 
@@ -65,6 +63,16 @@ export const VehicleEmbodiedCarbon = (globalConfig?: ConfigParams): PluginInterf
         return totalEmissions;
     }
 
+    /**
+     * Calculates the amount of carbon emitted by the product based on amount and emissions factor of the material.
+     */
+    function calculateEmbodiedEmissionsInCO2e(amount: number, emissionsFactor: number): number {
+        return amount * emissionsFactor; // g-CO2e
+    }
+
+    /**
+     * Calculates all the water that is used up in the manufacturing porcess
+     */
     function calculateWaterDepletion(vehicle: Vehicle, battery: Battery, waterUsageFactors: Object): number {
         let totalWaterDepletion = 0;
 
@@ -89,6 +97,9 @@ export const VehicleEmbodiedCarbon = (globalConfig?: ConfigParams): PluginInterf
         return totalWaterDepletion;
     }
 
+    /**
+     * Calculates how much water is used up per material in the manufacturing process of a vehicle.
+     */
     function calculateMaterialWaterDepletion(
         materials: MaterialQuantity[],
         waterUsageFactors: Object
@@ -114,6 +125,9 @@ export const VehicleEmbodiedCarbon = (globalConfig?: ConfigParams): PluginInterf
         return totalWaterDepletion;
     }
 
+    /**
+     * Calculates all wasted material for every subcomponent of the vehicle.
+     */
     function calculateCriticalMaterialWaste(
         vehicle: Vehicle,
         battery: Battery,
@@ -133,6 +147,9 @@ export const VehicleEmbodiedCarbon = (globalConfig?: ConfigParams): PluginInterf
         endOfLife: number;
     }
 
+    /**
+     * Calculate how much material is wasted during the manufacturing cycle.
+     */
     function subCalculateCriticalMaterialWaste(
         materials: MaterialQuantity[],
         wasteFactors: Object,

@@ -1,85 +1,98 @@
-# CO2.JS
+# Vehicle Embodied Carbon
 
-> [!NOTE] > `CO2.JS` ([thegreenwebfoundation/co2.js](https://github.com/thegreenwebfoundation/co2.js)) is a community plugin, not part of the IF standard library. This means the IF core team are not closely monitoring these plugins to keep them up to date. You should do your own research before implementing them!
+> [!NOTE] > `Vehicle Embodied Carbon` is a community plugin, not part of the IF standard library. This means the IF core team are not closely monitoring these plugins to keep them up to date. You should do your own research before implementing them!
 
 # Parameters
 
 ## Plugin global config
 
-- `options`: **SWD Plugin Only** an object containing any Sustainable Web Design specific variables to the changed. All keys are optional.
-  - `dataReloadRatio` - a value between 0 and 1 representing the percentage of data that is downloaded by return visitors. -`firstVisitPercentage` - a value between 0 and 1 representing the percentage of new visitors.
-  - `returnVisitPercentage` - a value between 0 and 1 representing the percentage of returning visitors.
-  - `gridIntensity` - an object that can contain the following optional keys:
-    - `device` - a number representing the carbon intensity for the given segment (in grams per kilowatt-hour). Or, an object, which contains a key of country and a value that is an Alpha-3 ISO country code.
-    - `dataCenter` - a number representing the carbon intensity for the given segment (in grams per kilowatt-hour). Or, an object, which contains a key of country and a value that is an Alpha-3 ISO country code.
-    - `networks` - A number representing the carbon intensity for the given segment (in grams per kilowatt-hour). Or, an object, which contains a key of country and a value that is an Alpha-3 ISO country code.
-
-The value for `device`, `dataCenter`, or `networks` can be a number representing the carbon intensity for the given segment (in grams per kilowatt-hour). Or, an object, which contains a key of country and a value that is an Alpha-3 ISO country code.
-
-## Plugin node config
-
-- `type`: supported plugins by the library, `swd` or `1byte`
-- `green-web-host`: true if the website is hosted on a green web host, false otherwise
+- `emissionsFactors`: A collection of materials with their emissions factor.
+  - [Material-Name]: [Emissions-Factor] - The material name and the emissions factor that matterial has
+- `waterUsageFactors`:
+  - [Material-Name]: [Water-Usage-Factor] - The material name and the water usage factor.
+- `wasteFactors`: Collection of materials that leave waste behind.
+  - [Material-Name] - The name of the material that has waste factors.
+    - manufacturing - The material factor that is left over after manufactoring.
+    - endOfLife - The material factor that can't be recycled.
 
 ## Inputs
 
-- `network/data/bytes`: the number of bytes transferred or `network/data` if the number is in GB
-- `duration`: the amount of time the observation covers, in seconds
-- `timestamp`: a timestamp for the observation
+- `vehicle/materials-breakdown`: All the different materials that go into making a vehicle
+- `battery/active-cell-materials`: All the materials that go into making all the cells that go into the battery pack.
+- `battery/structural-components`: All the materials that are needed to make the battery pack without the material that goes into active cell components.
+
+The 3 inputs above all need a list. The list is based on a key value pair. The input is structured as followed: `[material Name]: [weight of material in grams]` When there is more then 1 material it's seperated with a semicolon.
 
 ## Returns
 
-- `carbon-operational`: carbon emissions from the operation of the website, in grams of CO2e
+- `vehicle/embodied-carbon-g-co2e`: The amount of carbon that is embodies into the vehicle from manufactoring.
+- `vehicle/resource-depletion-water-m3`: The amount of water that is needed build the vehicle.
+- `vehicle/manufacturing-waste-by-material`: The leftover materials after the vehicle is manufactured.
 
 # IF Implementation
 
-IF utilizes the CO2JS Framework to calculate the carbon emissions of a website. The CO2JS Framework is a collection of plugins that calculate the carbon emissions of a website based on different parameters. IF installs the CO2js npm package from `@tgwf/co2js` and invokes its functions from a plugin plugin.
+IF utilizes the Vehicle embodied carbon Framework to calculate the carbon emissions and waste materials.
 
-The CO2JS Framework is a community plugin, not part of the IF standard library. This means the IF core team are not closely monitoring these plugins to keep them up to date. You should do your own research before implementing them!
+The Vehicle embodied carbon Framework is a community plugin, not part of the IF standard library. This means the IF core team are not closely monitoring these plugins to keep them up to date. You should do your own research before implementing them!
 
 ## Usage
 
 In IF the plugin is called from an `manifest`. An `manifest` is a `.yaml` file that contains configuration metadata and usage inputs. This is interpreted by the command line tool, `ie`.
 
-The plugin config should define a `type` supported by the CO2.JS library (either `swd` or `1byte`). These are different ways to calculate the operational carbon associated with a web application; `swd` is shorthand for 'sustainable web design' plugin and `1byte` refers to the OneByte mdoel. You can read about the details of these plugins and how they differ at the [Green Web Foundation website](https://developers.thegreenwebfoundation.org/co2js/explainer/methodologies-for-calculating-website-carbon/).
+The plugin should have a list of material properties in the global config. This includes `Emissions factors`, ` Water usage factors` and `Waste factors`.
 
-Each input is expected to contain `network/data/bytes` or `network/data`, `duration` and `timestamp` fields.
+Each input is expected to contain `vehicle/materials-breakdown`, `battery/active-cell-materials` and `battery/structural-components` fields.
+
+These fields expect you to have a key value pair list as described in the inputs section of the readme.
 
 ## Manifest
 
-The following is an example of how CO2.JS can be invoked using an `manifest`.
+The following is an example of how Vehicle Embodied Carbon can be invoked using an `manifest`.
 
 ```yaml
-name: co2js-demo
-description: example manifest invoking CO2.JS plugin
+name: vehicle-embodied-carbon
+description: Calculates the embodied carbon emissions associated with a vehicle's production.
 tags:
 initialize:
   plugins:
-    co2js:
-      method: Co2js
-      path: '@grnsft/if-unofficial-plugins'
+    vehicle-embodied-carbon:
+      method: VehicleEmbodiedCarbon
+      path: "@grnsft/if-unofficial-plugins"
       global-config:
-        options:
-          dataReloadRatio: 0.6
-          firstVisitPercentage: 0.9
-          returnVisitPercentage: 0.1
-          gridIntensity:
-            device: 560.98
-            dataCenter:
-              country: 'TWN'
+        emissionsFactors:
+          Lithium: 16
+          Iron: 2
+          Steel: 2.1
+          Aluminum: 10
+        waterUsageFactors:
+          Lithium: 25000
+          Iron: 50
+          Steel: 60
+          Aluminum: 200
+        wasteFactors:
+          Lithium: 
+            manufacturing: 0.35
+            endOfLife: 0.05
+          Iron: 
+            manufacturing: 0.15
+            endOfLife: 0.1
+          Steel: 
+            manufacturing: 0.2
+            endOfLife: 0.1
+          Aluminum:
+            manufacturing: 0.12
+            endOfLife: 0.12
 tree:
   children:
     child:
       pipeline:
-        - co2js
+        - vehicle-embodied-carbon
       config:
-        co2js:
-          type: swd
-          green-web-host: true
       inputs:
-        - timestamp: 2023-07-06T00:00
-          duration: 1
-          network/data/bytes: 1000000
+        - timestamp: 2024-03-26T14:28:30 
+          vehicle/materials-breakdown: "Steel: 1850000; Aluminum: 750000"
+          battery/active-cell-materials: "Lithium: 9000; Iron: 15000" 
+          battery/structural-components: "Steel: 30000; Aluminum: 30000" 
 ```
 
 You can run this by passing it to `ie`. Run impact using the following command run from the project root:
@@ -87,104 +100,117 @@ You can run this by passing it to `ie`. Run impact using the following command r
 ```sh
 npm i -g @grnsft/if
 npm i -g @grnsft/if-unofficial-plugins
-ie --manifest ./examples/manifests/test/co2js.yml --output ./examples/outputs/co2js.yml
+ie --manifest ./examples/manifests/vehicle-embodied-carbon.yml --output ./examples/outputs/vehicle-embodied-carbon.yml
 ```
 
-This yields a result that looks like the following (saved to `/outputs/co2js.yml`):
+This yields a result that looks like the following (saved to `/outputs/vehicle-embodied-carbon.yml`):
 
 ```yaml
-name: co2js-demo
-description: example manifest invoking CO2.JS plugin
-tags: null
+name: vehicle-embodied-carbon
+description: Calculates the embodied carbon emissions associated with a vehicle's production.
+tags:
 initialize:
   plugins:
-    co2js:
-      path: '@grnsft/if-unofficial-plugins'
-      method: Co2js
+    vehicle-embodied-carbon:
+      method: VehicleEmbodiedCarbon
+      path: "@grnsft/if-unofficial-plugins"
       global-config:
-        options:
-          dataReloadRatio: 0.6
-          firstVisitPercentage: 0.9
-          returnVisitPercentage: 0.1
-          gridIntensity:
-            device: 560.98
-            dataCenter:
-              country: TWN
+        emissionsFactors:
+          Lithium: 16
+          Iron: 2
+          Steel: 2.1
+          Aluminum: 10
+        waterUsageFactors:
+          Lithium: 25000
+          Iron: 50
+          Steel: 60
+          Aluminum: 200
+        wasteFactors:
+          Lithium: 
+            manufacturing: 0.35
+            endOfLife: 0.05
+          Iron: 
+            manufacturing: 0.15
+            endOfLife: 0.1
+          Steel: 
+            manufacturing: 0.2
+            endOfLife: 0.1
+          Aluminum:
+            manufacturing: 0.12
+            endOfLife: 0.12
 tree:
   children:
     child:
       pipeline:
-        - co2js
+        - vehicle-embodied-carbon
       config:
-        co2js:
-          type: swd
-          green-web-host: true
       inputs:
-        - timestamp: 2023-07-06T00:00
-          duration: 1
-          network/data/bytes: 1000000
+        - timestamp: 2024-03-26T14:28:30 
+          vehicle/materials-breakdown: "Steel: 1850000; Aluminum: 750000"
+          battery/active-cell-materials: "Lithium: 9000; Iron: 15000" 
+          battery/structural-components: "Steel: 30000; Aluminum: 30000"
       outputs:
-        - timestamp: 2023-07-06T00:00
-          duration: 1
-          network/data/bytes: 1000000
-          carbon-operational: 0.34497244224000007
+        - timestamp: "2024-03-26T14:28:30.000Z",
+          vehicle/materials-breakdown: "Steel: 1850000; Aluminum: 750000",
+          battery/active-cell-materials: "Lithium: 9000; Iron: 15000",
+          battery/structural-components: "Steel: 30000; Aluminum: 30000",
+          vehicle/embodied-carbon-g-co2e: 11922000,
+          vehicle/resource-depletion-water-m3: 494.55,
+          vehicle/manufacturing-waste-by-material: 
+            vehicle/material-waste-Steel: 470000,
+            vehicle/material-waste-Aluminum: 106363.63636363638,
+            vehicle/material-waste-Lithium: 4846.153846153846,
+            vehicle/material-waste-Iron: 2647.0588235294126 
 ```
 
 ## TypeScript
 
 You can see example Typescript invocations for each plugin below.
 
-### SWD
-
 ```typescript
-import {Co2js} from '@grnsft/if-unofficial-plugins';
+import {VehicleEmbodiedCarbon} from '@grnsft/if-unofficial-plugins';
 
 const globalConfig = {
-  options: {
-    // Optional
-    dataReloadRatio: 0.6,
-    firstVisitPercentage: 0.9,
-    returnVisitPercentage: 0.1,
-    gridIntensity: {
-      device: 560.98,
-      dataCenter: 50,
-      networks: 437.66,
-    },
+  emissionsFactors: {
+    Lithium: 16,
+    Iron: 2,
+    Steel: 2.1,
+    Aluminum: 10
+  },
+  waterUsageFactors: {
+    Lithium: 25000,
+    Iron: 50,
+    Steel: 60, 
+    Aluminum: 200 
+  }, 
+  wasteFactors: {
+    Lithium: {
+      manufacturing: 0.35
+      endOfLife: 0.05
+    }
+    Iron: { 
+      manufacturing: 0.15
+      endOfLife: 0.1
+    }
+   Steel: { 
+      manufacturing: 0.2
+      endOfLife: 0.1
+   }
+   Aluminum: {
+      manufacturing: 0.12
+      endOfLife: 0.12
+   }
   },
 };
-const co2js = Co2js(globalConfig);
-const results = await co2js.execute(
+const vehicleEmbodiedCarbon = VehicleEmbodiedCarbon(globalConfig);
+const results = await vehicleEmbodiedCarbon.execute(
   [
     {
-      duration: 3600, // duration institute
       timestamp: '2021-01-01T00:00:00Z', // ISO8601 / RFC3339 timestamp
-      'network/data/bytes': 1000000, // bytes transferred
+      'vehicle/materials-breakdown': '"Steel: 1850000; Aluminum: 750000"', 
+      'battery/active-cell-materials': 'Lithium: 9000; Iron: 15000',
+      'battery/structural-components': 'Steel: 30000; Aluminum: 30000'
     },
-  ],
-  {
-    type: 'swd',
-    'green-web-host': true, // true if the website is hosted on a green web host, false otherwise
-  }
-);
-```
-
-### 1byte
-
-```typescript
-import {Co2js} from '@grnsft/if-unofficial-plugins';
-
-const co2js = Co2js();
-const results = await co2js.execute(
-  [
-    {
-      duration: 3600, // duration institute
-      timestamp: '2021-01-01T00:00:00Z', // ISO8601 / RFC3339 timestamp
-      'network/data/bytes': 1000000, // bytes transferred
-    },
-  ],
-  {
-    type: '1byte',
-    'green-web-host': true, // true if the website is hosted on a green web host, false otherwise
-  }
+  ]
 );
 ```

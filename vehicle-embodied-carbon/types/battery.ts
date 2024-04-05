@@ -2,34 +2,29 @@ import { PluginParams } from "../../../types";
 import { Material } from "../interfaces/enums/material";
 import { MaterialQuantity } from "../interfaces/materialQuantity";
 
-
 export class Battery {
-   id: number = 0;
-
-   chemistry: String = '';
-   productionLocation: String = '';
-   expectedLifeSpanInYears: number = 0;
-   activeCellMaterials: MaterialQuantity[] = [];
-   structuralComponents: MaterialQuantity[] = [];
-
-   maxCapacityMAh: number = 0;
+    activeCellMaterials: MaterialQuantity[] = [];
+    chemistry: String = '';
+    directCarbonEmissions: number = 0;
+    expectedLifeSpanInYears: number = 0;
+    id: number = 0;
+    maxCapacityMah: number = 0;
+    productionLocation: String = '';
+    structuralComponents: MaterialQuantity[] = [];
 
    static toModel(inputData: PluginParams): Battery {
       let battery = new Battery();
 
-      battery.id = inputData['battery/id'];
-
-      battery.chemistry = inputData['battery/chemistry'];
-      battery.productionLocation = inputData['battery/production-location'];
-      battery.expectedLifeSpanInYears = inputData['battery/expected-life-span-in-years'];
-
       const activeCellMaterialsString = inputData['battery/active-cell-materials'];
       battery.activeCellMaterials = parseMaterialsString(activeCellMaterialsString);
-
+      battery.chemistry = inputData['battery/chemistry'];
+      battery.directCarbonEmissions = inputData['battery/direct-carbon-emissions'];
+      battery.expectedLifeSpanInYears = inputData['battery/expected-life-span-in-years'];
+      battery.id = inputData['battery/id'];
+      battery.maxCapacityMah = inputData['battery/max-capacity-mah'];
+      battery.productionLocation = inputData['battery/production-location'];
       const structuralComponentsString = inputData['battery/structural-components'];
       battery.structuralComponents = parseMaterialsString(structuralComponentsString);
-
-      battery.maxCapacityMAh = inputData['max-capacity-mAh'];
 
       return battery;
    }

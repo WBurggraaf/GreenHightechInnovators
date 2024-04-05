@@ -1,4 +1,4 @@
 export enum WeigthUnit {
-    Kg = 'kg',
+    KG = 'kg',
     G = 'g',
 }
