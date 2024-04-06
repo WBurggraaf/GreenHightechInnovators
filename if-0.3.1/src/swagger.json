@@ -1,0 +1,51 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Impact Framework API",
+    "version": "1.0.0",
+    "description": "API for managing and computing environmental impacts of software applications using the Impact Framework (IF).",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    },
+    {
+      "url": "http://localhost:3000"
+    },
+    {
+      "url": "http://ifapicontainer.aganf9fqf6anebdu.westeurope.azurecontainer.io:3000"
+    }
+  ],
+  "paths": {
+    "/if": {
+      "post": {
+        "summary": "Compute environmental impacts using a manifest file in JSON (Convert your YAML manifests to JSON before Pasting)",
+        "description": "Endpoint to compute environmental impacts based on provided manifest file.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Impact calculation result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

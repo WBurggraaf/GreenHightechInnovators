@@ -1,0 +1,2070 @@
+name: complete-chain
+description: Calculates all.
+tags: 
+initialize:
+  plugins:
+    vehicle-embodied-carbon:
+      method: VehicleEmbodiedCarbon
+      path: "@grnsft/if-unofficial-plugins"
+      global-config:
+        emissionsFactors:
+          Lithium: 16
+          Iron: 2
+          Phosphate: 4
+          Graphite: 5.5
+          Binder: 3
+          ConductiveAdditive: 4
+          Electrolyte: 5
+          Separator: 3
+          Steel: 2.1
+          Aluminum: 10
+          Copper: 3
+          Plastics: 2.3
+          Glass: 1.8
+          Rubber: 4
+          RareEarths: 15
+          Electronics: 6
+          Textiles: 4
+          Fluids: 3
+          SpecializedAlloys: 5
+        waterUsageFactors:
+          Lithium: 25000
+          Iron: 50
+          Phosphate: 800
+          Graphite: 2000
+          Binder: 500
+          ConductiveAdditive: 300
+          Electrolyte: 200
+          Separator: 300
+          Steel: 60
+          Aluminum: 200
+          Copper: 70
+          Plastics: 500
+          Glass: 1500
+          Rubber: 800
+          RareEarths: 4000
+          Electronics: 1500
+          Textiles: 1000
+          Fluids: 100
+          SpecializedAlloys: 300
+        wasteFactors:
+          Lithium:
+            manufacturing: 0.35
+            endOfLife: 0.05
+          Iron:
+            manufacturing: 0.15
+            endOfLife: 0.1
+          Phosphate:
+            manufacturing: 0.4
+            endOfLife: 0.05
+          Graphite:
+            manufacturing: 0.55
+            endOfLife: 0.06
+          Binder:
+            manufacturing: 0.3
+            endOfLife: 0.2
+          ConductiveAdditive:
+            manufacturing: 0.2
+            endOfLife: 0.1
+          Electrolyte:
+            manufacturing: 0.3
+            endOfLife: 0.1
+          Separator:
+            manufacturing: 0.3
+            endOfLife: 0.2
+          Steel:
+            manufacturing: 0.2
+            endOfLife: 0.1
+          Aluminum:
+            manufacturing: 0.12
+            endOfLife: 0.12
+          Copper:
+            manufacturing: 0.15
+            endOfLife: 0.01
+          Plastics:
+            manufacturing: 0.8
+            endOfLife: 0.3
+          Glass:
+            manufacturing: 0.7
+            endOfLife: 0.1
+          Rubber:
+            manufacturing: 0.4
+            endOfLife: 0.2
+          RareEarths:
+            manufacturing: 0.5
+            endOfLife: 0.03
+          Electronics:
+            manufacturing: 0.3
+            endOfLife: 0.2
+          Textiles:
+            manufacturing: 0.3
+            endOfLife: 0.4
+          Fluids:
+            manufacturing: 0.1
+            endOfLife: 0.3
+          SpecializedAlloys:
+            manufacturing: 0.3
+            endOfLife: 0.2
+        options:
+          optionPlaceHolder: 0.6
+    weather-impact-prediction:
+      method: WeatherImpactPrediction
+      path: "@grnsft/if-unofficial-plugins"
+      global-config:
+        solarStats:
+          efficiencyMonthlyNorthernHemisphere:
+            january: 0.49
+            february: 0.61
+            march: 0.75
+            april: 0.88
+            may: 0.94
+            june: 0.99
+            july: 1
+            august: 0.94
+            september: 0.85
+            october: 0.68
+            november: 0.53
+            december: 0.43
+          efficiencyMonthlySouthernHemisphere:
+            january: 1
+            february: 0.94
+            march: 0.85
+            april: 0.68
+            may: 0.53
+            june: 0.43
+            july: 0.49
+            august: 0.61
+            september: 0.75
+            october: 0.88
+            november: 0.94
+            december: 0.99
+          efficiencyPerHour:
+            '0': 0
+            '1': 0
+            '2': 0
+            '3': 0
+            '4': 0
+            '5': 0
+            '6': 0.04
+            '7': 0.08
+            '8': 0.14
+            '9': 0.32
+            '10': 0.5
+            '11': 0.65
+            '12': 0.7
+            '13': 0.85
+            '14': 0.91
+            '15': 0.8
+            '16': 0.75
+            '17': 0.68
+            '18': 0.33
+            '19': 0.04
+            '20': 0
+            '21': 0
+            '22': 0
+            '23': 0
+            '24': 0
+        powerSource:
+          solar: 41
+          wind: 11
+          geothermal: 38
+          hydro: 4
+          nuclear: 12
+          bio: 230
+          oil: 840
+          gas: 490
+          coalBituminous: 740
+          coalSubBituminous: 1024
+          coalLignite: 1689
+    ev-charging-emissions:
+      method: EvChargingEmissions
+      path: "@grnsft/if-unofficial-plugins"
+      global-config:
+        options:
+          averageRenewableEnergyPercentageGrid: 5
+    package-delivery-emissions:
+      method: PackageDeliveryEmissions
+      path: "@grnsft/if-unofficial-plugins"
+      global-config: {}
+tree:
+  children:
+    child:
+      pipeline:
+      - vehicle-embodied-carbon
+      - weather-impact-prediction
+      - ev-charging-emissions
+      - package-delivery-emissions
+      config: 
+      inputs:
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 92
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 17
+        vehicle/fuel-type: electric
+        vehicle/id: 1
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 6659276; Aluminum: 1985648; Lithium:
+          145177; Cobalt: 29075; Nickel: 80522; Copper: 158587; Graphite: 99819; Manganese:
+          16559; RareEarths: 4118; Plastics: 817590; Textiles: 104112; Glass: 499070;
+          Rubber: 152190; Electronics: 167196; Fluids: 97904'
+        vehicle/name: EV Delivery 1
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5124; Iron: 38239; Phosphate: 45080;
+          Graphite: 19129; Binder: 1529; ConductiveAdditive: 1241; Electrolyte: 30189;
+          Separator: 1018'
+        battery/amount-charged-mah: 9870
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2760
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 96
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 8
+        battery/expected-percentage-renewable-energy: 35
+        battery/id: 1
+        battery/max-capacity-mah: 49638
+        battery/max-pack-voltage: 783
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 58
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1217654; Copper: 406394; Steel:
+          312051; Plastics: 79638'
+        battery/temperature: 37
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 908
+        weather/cloud-coverage-percentage: 4
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 29
+        weather/temperature-in-celsius: 22
+        weather/visibility-in-meters: 6411
+        weather/wind-direction-in-degrees: 111
+        weather/wind-speed-in-kmh: 30
+        grid/bio-percentage: 32
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 42
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 1
+        grid/coal-sub-bituminous-percentage: -2
+        grid/gas-percentage: 0
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 13
+        grid/oil-percentage: 13
+        grid/solar-percentage: 0
+        grid/wind-percentage: 3
+        charging-station/cable-efficency: 0.92
+        charging-station/converter-efficiency: 0.85
+        charging-station/id: 1
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 1
+        route/expected-efficiency: 0
+        route/id: 0
+        route/segment-current: 0
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 6.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 0
+        route/segment-real-time-speed: 86
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 92
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 17
+        vehicle/fuel-type: electric
+        vehicle/id: 1
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 6659276; Aluminum: 1985648; Lithium:
+          145177; Cobalt: 29075; Nickel: 80522; Copper: 158587; Graphite: 99819; Manganese:
+          16559; RareEarths: 4118; Plastics: 817590; Textiles: 104112; Glass: 499070;
+          Rubber: 152190; Electronics: 167196; Fluids: 97904'
+        vehicle/name: EV Delivery 1
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5124; Iron: 38239; Phosphate: 45080;
+          Graphite: 19129; Binder: 1529; ConductiveAdditive: 1241; Electrolyte: 30189;
+          Separator: 1018'
+        battery/amount-charged-mah: 9870
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2760
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 96
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 8
+        battery/expected-percentage-renewable-energy: 35
+        battery/id: 1
+        battery/max-capacity-mah: 49638
+        battery/max-pack-voltage: 783
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 58
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1217654; Copper: 406394; Steel:
+          312051; Plastics: 79638'
+        battery/temperature: 37
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 908
+        weather/cloud-coverage-percentage: 4
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 29
+        weather/temperature-in-celsius: 22
+        weather/visibility-in-meters: 6411
+        weather/wind-direction-in-degrees: 111
+        weather/wind-speed-in-kmh: 30
+        grid/bio-percentage: 32
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 42
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 1
+        grid/coal-sub-bituminous-percentage: -2
+        grid/gas-percentage: 0
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 13
+        grid/oil-percentage: 13
+        grid/solar-percentage: 0
+        grid/wind-percentage: 3
+        charging-station/cable-efficency: 0.92
+        charging-station/converter-efficiency: 0.85
+        charging-station/id: 1
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 1
+        route/expected-efficiency: 0
+        route/id: 1
+        route/segment-current: 1
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 6.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 1
+        route/segment-real-time-speed: 77
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 92
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 17
+        vehicle/fuel-type: electric
+        vehicle/id: 1
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 6659276; Aluminum: 1985648; Lithium:
+          145177; Cobalt: 29075; Nickel: 80522; Copper: 158587; Graphite: 99819; Manganese:
+          16559; RareEarths: 4118; Plastics: 817590; Textiles: 104112; Glass: 499070;
+          Rubber: 152190; Electronics: 167196; Fluids: 97904'
+        vehicle/name: EV Delivery 1
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5124; Iron: 38239; Phosphate: 45080;
+          Graphite: 19129; Binder: 1529; ConductiveAdditive: 1241; Electrolyte: 30189;
+          Separator: 1018'
+        battery/amount-charged-mah: 9870
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2760
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 96
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 8
+        battery/expected-percentage-renewable-energy: 35
+        battery/id: 1
+        battery/max-capacity-mah: 49638
+        battery/max-pack-voltage: 783
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 58
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1217654; Copper: 406394; Steel:
+          312051; Plastics: 79638'
+        battery/temperature: 37
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 908
+        weather/cloud-coverage-percentage: 4
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 29
+        weather/temperature-in-celsius: 22
+        weather/visibility-in-meters: 6411
+        weather/wind-direction-in-degrees: 111
+        weather/wind-speed-in-kmh: 30
+        grid/bio-percentage: 32
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 42
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 1
+        grid/coal-sub-bituminous-percentage: -2
+        grid/gas-percentage: 0
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 13
+        grid/oil-percentage: 13
+        grid/solar-percentage: 0
+        grid/wind-percentage: 3
+        charging-station/cable-efficency: 0.92
+        charging-station/converter-efficiency: 0.85
+        charging-station/id: 1
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 1
+        route/expected-efficiency: 0
+        route/id: 2
+        route/segment-current: 2
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 3.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 2
+        route/segment-real-time-speed: 37
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 92
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 17
+        vehicle/fuel-type: electric
+        vehicle/id: 1
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 6659276; Aluminum: 1985648; Lithium:
+          145177; Cobalt: 29075; Nickel: 80522; Copper: 158587; Graphite: 99819; Manganese:
+          16559; RareEarths: 4118; Plastics: 817590; Textiles: 104112; Glass: 499070;
+          Rubber: 152190; Electronics: 167196; Fluids: 97904'
+        vehicle/name: EV Delivery 1
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5124; Iron: 38239; Phosphate: 45080;
+          Graphite: 19129; Binder: 1529; ConductiveAdditive: 1241; Electrolyte: 30189;
+          Separator: 1018'
+        battery/amount-charged-mah: 9870
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2760
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 96
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 8
+        battery/expected-percentage-renewable-energy: 35
+        battery/id: 1
+        battery/max-capacity-mah: 49638
+        battery/max-pack-voltage: 783
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 58
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1217654; Copper: 406394; Steel:
+          312051; Plastics: 79638'
+        battery/temperature: 37
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 908
+        weather/cloud-coverage-percentage: 4
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 29
+        weather/temperature-in-celsius: 22
+        weather/visibility-in-meters: 6411
+        weather/wind-direction-in-degrees: 111
+        weather/wind-speed-in-kmh: 30
+        grid/bio-percentage: 32
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 42
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 1
+        grid/coal-sub-bituminous-percentage: -2
+        grid/gas-percentage: 0
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 13
+        grid/oil-percentage: 13
+        grid/solar-percentage: 0
+        grid/wind-percentage: 3
+        charging-station/cable-efficency: 0.9
+        charging-station/converter-efficiency: 0.8
+        charging-station/id: 2
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 2
+        route/expected-efficiency: 0
+        route/id: 0
+        route/segment-current: 0
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 5.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 0
+        route/segment-real-time-speed: 68
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 92
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 17
+        vehicle/fuel-type: electric
+        vehicle/id: 1
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 6659276; Aluminum: 1985648; Lithium:
+          145177; Cobalt: 29075; Nickel: 80522; Copper: 158587; Graphite: 99819; Manganese:
+          16559; RareEarths: 4118; Plastics: 817590; Textiles: 104112; Glass: 499070;
+          Rubber: 152190; Electronics: 167196; Fluids: 97904'
+        vehicle/name: EV Delivery 1
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5124; Iron: 38239; Phosphate: 45080;
+          Graphite: 19129; Binder: 1529; ConductiveAdditive: 1241; Electrolyte: 30189;
+          Separator: 1018'
+        battery/amount-charged-mah: 9870
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2760
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 96
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 8
+        battery/expected-percentage-renewable-energy: 35
+        battery/id: 1
+        battery/max-capacity-mah: 49638
+        battery/max-pack-voltage: 783
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 58
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1217654; Copper: 406394; Steel:
+          312051; Plastics: 79638'
+        battery/temperature: 37
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 908
+        weather/cloud-coverage-percentage: 4
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 29
+        weather/temperature-in-celsius: 22
+        weather/visibility-in-meters: 6411
+        weather/wind-direction-in-degrees: 111
+        weather/wind-speed-in-kmh: 30
+        grid/bio-percentage: 32
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 42
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 1
+        grid/coal-sub-bituminous-percentage: -2
+        grid/gas-percentage: 0
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 13
+        grid/oil-percentage: 13
+        grid/solar-percentage: 0
+        grid/wind-percentage: 3
+        charging-station/cable-efficency: 0.9
+        charging-station/converter-efficiency: 0.8
+        charging-station/id: 2
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 2
+        route/expected-efficiency: 0
+        route/id: 1
+        route/segment-current: 1
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 6.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 1
+        route/segment-real-time-speed: 23
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 92
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 17
+        vehicle/fuel-type: electric
+        vehicle/id: 1
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 6659276; Aluminum: 1985648; Lithium:
+          145177; Cobalt: 29075; Nickel: 80522; Copper: 158587; Graphite: 99819; Manganese:
+          16559; RareEarths: 4118; Plastics: 817590; Textiles: 104112; Glass: 499070;
+          Rubber: 152190; Electronics: 167196; Fluids: 97904'
+        vehicle/name: EV Delivery 1
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5124; Iron: 38239; Phosphate: 45080;
+          Graphite: 19129; Binder: 1529; ConductiveAdditive: 1241; Electrolyte: 30189;
+          Separator: 1018'
+        battery/amount-charged-mah: 9870
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2760
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 96
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 8
+        battery/expected-percentage-renewable-energy: 35
+        battery/id: 1
+        battery/max-capacity-mah: 49638
+        battery/max-pack-voltage: 783
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 58
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1217654; Copper: 406394; Steel:
+          312051; Plastics: 79638'
+        battery/temperature: 37
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 908
+        weather/cloud-coverage-percentage: 4
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 29
+        weather/temperature-in-celsius: 22
+        weather/visibility-in-meters: 6411
+        weather/wind-direction-in-degrees: 111
+        weather/wind-speed-in-kmh: 30
+        grid/bio-percentage: 32
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 42
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 1
+        grid/coal-sub-bituminous-percentage: -2
+        grid/gas-percentage: 0
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 13
+        grid/oil-percentage: 13
+        grid/solar-percentage: 0
+        grid/wind-percentage: 3
+        charging-station/cable-efficency: 0.9
+        charging-station/converter-efficiency: 0.8
+        charging-station/id: 2
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 2
+        route/expected-efficiency: 0
+        route/id: 2
+        route/segment-current: 2
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 7.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 2
+        route/segment-real-time-speed: 84
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 94
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 22
+        vehicle/fuel-type: electric
+        vehicle/id: 2
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7216417; Aluminum: 2057223; Lithium:
+          144266; Cobalt: 28782; Nickel: 80277; Copper: 163994; Graphite: 103013;
+          Manganese: 16637; RareEarths: 4069; Plastics: 784396; Textiles: 102069;
+          Glass: 520508; Rubber: 155168; Electronics: 159792; Fluids: 96342'
+        vehicle/name: EV Delivery 2
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5156; Iron: 39419; Phosphate: 48013;
+          Graphite: 19290; Binder: 1544; ConductiveAdditive: 1233; Electrolyte: 29828;
+          Separator: 1043'
+        battery/amount-charged-mah: 9893
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2471
+        battery/chemistry: LFP
+        battery/current-soc: 82
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 44
+        battery/id: 1
+        battery/max-capacity-mah: 48213
+        battery/max-pack-voltage: 785
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 99
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1149558; Copper: 389153; Steel:
+          297620; Plastics: 81522'
+        battery/temperature: 2
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 947
+        weather/cloud-coverage-percentage: 70
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 42
+        weather/temperature-in-celsius: 11
+        weather/visibility-in-meters: 7199
+        weather/wind-direction-in-degrees: 198
+        weather/wind-speed-in-kmh: 21
+        grid/bio-percentage: 23
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 3
+        grid/coal-bituminous-percentage: 1
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: -6
+        grid/gas-percentage: 2
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 13
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 1
+        charging-station/cable-efficency: 0.92
+        charging-station/converter-efficiency: 0.85
+        charging-station/id: 1
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 1
+        route/expected-efficiency: 0
+        route/id: 0
+        route/segment-current: 0
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 5.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 0
+        route/segment-real-time-speed: 44
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 94
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 22
+        vehicle/fuel-type: electric
+        vehicle/id: 2
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7216417; Aluminum: 2057223; Lithium:
+          144266; Cobalt: 28782; Nickel: 80277; Copper: 163994; Graphite: 103013;
+          Manganese: 16637; RareEarths: 4069; Plastics: 784396; Textiles: 102069;
+          Glass: 520508; Rubber: 155168; Electronics: 159792; Fluids: 96342'
+        vehicle/name: EV Delivery 2
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5156; Iron: 39419; Phosphate: 48013;
+          Graphite: 19290; Binder: 1544; ConductiveAdditive: 1233; Electrolyte: 29828;
+          Separator: 1043'
+        battery/amount-charged-mah: 9893
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2471
+        battery/chemistry: LFP
+        battery/current-soc: 82
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 44
+        battery/id: 1
+        battery/max-capacity-mah: 48213
+        battery/max-pack-voltage: 785
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 99
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1149558; Copper: 389153; Steel:
+          297620; Plastics: 81522'
+        battery/temperature: 2
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 947
+        weather/cloud-coverage-percentage: 70
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 42
+        weather/temperature-in-celsius: 11
+        weather/visibility-in-meters: 7199
+        weather/wind-direction-in-degrees: 198
+        weather/wind-speed-in-kmh: 21
+        grid/bio-percentage: 23
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 3
+        grid/coal-bituminous-percentage: 1
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: -6
+        grid/gas-percentage: 2
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 13
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 1
+        charging-station/cable-efficency: 0.92
+        charging-station/converter-efficiency: 0.85
+        charging-station/id: 1
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 1
+        route/expected-efficiency: 0
+        route/id: 1
+        route/segment-current: 1
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 8.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 1
+        route/segment-real-time-speed: 92
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 94
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 22
+        vehicle/fuel-type: electric
+        vehicle/id: 2
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7216417; Aluminum: 2057223; Lithium:
+          144266; Cobalt: 28782; Nickel: 80277; Copper: 163994; Graphite: 103013;
+          Manganese: 16637; RareEarths: 4069; Plastics: 784396; Textiles: 102069;
+          Glass: 520508; Rubber: 155168; Electronics: 159792; Fluids: 96342'
+        vehicle/name: EV Delivery 2
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5156; Iron: 39419; Phosphate: 48013;
+          Graphite: 19290; Binder: 1544; ConductiveAdditive: 1233; Electrolyte: 29828;
+          Separator: 1043'
+        battery/amount-charged-mah: 9893
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2471
+        battery/chemistry: LFP
+        battery/current-soc: 82
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 44
+        battery/id: 1
+        battery/max-capacity-mah: 48213
+        battery/max-pack-voltage: 785
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 99
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1149558; Copper: 389153; Steel:
+          297620; Plastics: 81522'
+        battery/temperature: 2
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 947
+        weather/cloud-coverage-percentage: 70
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 42
+        weather/temperature-in-celsius: 11
+        weather/visibility-in-meters: 7199
+        weather/wind-direction-in-degrees: 198
+        weather/wind-speed-in-kmh: 21
+        grid/bio-percentage: 23
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 3
+        grid/coal-bituminous-percentage: 1
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: -6
+        grid/gas-percentage: 2
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 13
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 1
+        charging-station/cable-efficency: 0.92
+        charging-station/converter-efficiency: 0.85
+        charging-station/id: 1
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 1
+        route/expected-efficiency: 0
+        route/id: 2
+        route/segment-current: 2
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 2.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 2
+        route/segment-real-time-speed: 73
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 94
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 22
+        vehicle/fuel-type: electric
+        vehicle/id: 2
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7216417; Aluminum: 2057223; Lithium:
+          144266; Cobalt: 28782; Nickel: 80277; Copper: 163994; Graphite: 103013;
+          Manganese: 16637; RareEarths: 4069; Plastics: 784396; Textiles: 102069;
+          Glass: 520508; Rubber: 155168; Electronics: 159792; Fluids: 96342'
+        vehicle/name: EV Delivery 2
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5156; Iron: 39419; Phosphate: 48013;
+          Graphite: 19290; Binder: 1544; ConductiveAdditive: 1233; Electrolyte: 29828;
+          Separator: 1043'
+        battery/amount-charged-mah: 9893
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2471
+        battery/chemistry: LFP
+        battery/current-soc: 82
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 44
+        battery/id: 1
+        battery/max-capacity-mah: 48213
+        battery/max-pack-voltage: 785
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 99
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1149558; Copper: 389153; Steel:
+          297620; Plastics: 81522'
+        battery/temperature: 2
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 947
+        weather/cloud-coverage-percentage: 70
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 42
+        weather/temperature-in-celsius: 11
+        weather/visibility-in-meters: 7199
+        weather/wind-direction-in-degrees: 198
+        weather/wind-speed-in-kmh: 21
+        grid/bio-percentage: 23
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 3
+        grid/coal-bituminous-percentage: 1
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: -6
+        grid/gas-percentage: 2
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 13
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 1
+        charging-station/cable-efficency: 0.9
+        charging-station/converter-efficiency: 0.8
+        charging-station/id: 2
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 2
+        route/expected-efficiency: 0
+        route/id: 0
+        route/segment-current: 0
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 9.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 0
+        route/segment-real-time-speed: 95
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 94
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 22
+        vehicle/fuel-type: electric
+        vehicle/id: 2
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7216417; Aluminum: 2057223; Lithium:
+          144266; Cobalt: 28782; Nickel: 80277; Copper: 163994; Graphite: 103013;
+          Manganese: 16637; RareEarths: 4069; Plastics: 784396; Textiles: 102069;
+          Glass: 520508; Rubber: 155168; Electronics: 159792; Fluids: 96342'
+        vehicle/name: EV Delivery 2
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5156; Iron: 39419; Phosphate: 48013;
+          Graphite: 19290; Binder: 1544; ConductiveAdditive: 1233; Electrolyte: 29828;
+          Separator: 1043'
+        battery/amount-charged-mah: 9893
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2471
+        battery/chemistry: LFP
+        battery/current-soc: 82
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 44
+        battery/id: 1
+        battery/max-capacity-mah: 48213
+        battery/max-pack-voltage: 785
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 99
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1149558; Copper: 389153; Steel:
+          297620; Plastics: 81522'
+        battery/temperature: 2
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 947
+        weather/cloud-coverage-percentage: 70
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 42
+        weather/temperature-in-celsius: 11
+        weather/visibility-in-meters: 7199
+        weather/wind-direction-in-degrees: 198
+        weather/wind-speed-in-kmh: 21
+        grid/bio-percentage: 23
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 3
+        grid/coal-bituminous-percentage: 1
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: -6
+        grid/gas-percentage: 2
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 13
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 1
+        charging-station/cable-efficency: 0.9
+        charging-station/converter-efficiency: 0.8
+        charging-station/id: 2
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 2
+        route/expected-efficiency: 0
+        route/id: 1
+        route/segment-current: 1
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 2.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 1
+        route/segment-real-time-speed: 45
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 94
+        vehicle/cable-efficiency: 95
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 22
+        vehicle/fuel-type: electric
+        vehicle/id: 2
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7216417; Aluminum: 2057223; Lithium:
+          144266; Cobalt: 28782; Nickel: 80277; Copper: 163994; Graphite: 103013;
+          Manganese: 16637; RareEarths: 4069; Plastics: 784396; Textiles: 102069;
+          Glass: 520508; Rubber: 155168; Electronics: 159792; Fluids: 96342'
+        vehicle/name: EV Delivery 2
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5156; Iron: 39419; Phosphate: 48013;
+          Graphite: 19290; Binder: 1544; ConductiveAdditive: 1233; Electrolyte: 29828;
+          Separator: 1043'
+        battery/amount-charged-mah: 9893
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2471
+        battery/chemistry: LFP
+        battery/current-soc: 82
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 44
+        battery/id: 1
+        battery/max-capacity-mah: 48213
+        battery/max-pack-voltage: 785
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 99
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1149558; Copper: 389153; Steel:
+          297620; Plastics: 81522'
+        battery/temperature: 2
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 947
+        weather/cloud-coverage-percentage: 70
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 42
+        weather/temperature-in-celsius: 11
+        weather/visibility-in-meters: 7199
+        weather/wind-direction-in-degrees: 198
+        weather/wind-speed-in-kmh: 21
+        grid/bio-percentage: 23
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 3
+        grid/coal-bituminous-percentage: 1
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: -6
+        grid/gas-percentage: 2
+        grid/geothermal-percentage: 2
+        grid/hydro-percentage: 13
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 1
+        charging-station/cable-efficency: 0.9
+        charging-station/converter-efficiency: 0.8
+        charging-station/id: 2
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 2
+        route/expected-efficiency: 0
+        route/id: 2
+        route/segment-current: 2
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 4.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 2
+        route/segment-real-time-speed: 56
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 90
+        vehicle/cable-efficiency: 97
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 23
+        vehicle/fuel-type: electric
+        vehicle/id: 3
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7058000; Aluminum: 1968189; Lithium:
+          139677; Cobalt: 30373; Nickel: 82048; Copper: 166529; Graphite: 101903;
+          Manganese: 16246; RareEarths: 3905; Plastics: 777250; Textiles: 98163; Glass:
+          486065; Rubber: 153946; Electronics: 166618; Fluids: 96558'
+        vehicle/name: EV Delivery 3
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5246; Iron: 39858; Phosphate: 45213;
+          Graphite: 20084; Binder: 1538; ConductiveAdditive: 1253; Electrolyte: 28789;
+          Separator: 1009'
+        battery/amount-charged-mah: 9957
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2482
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 54
+        battery/id: 1
+        battery/max-capacity-mah: 49080
+        battery/max-pack-voltage: 795
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 61
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1218875; Copper: 415405; Steel:
+          298707; Plastics: 77513'
+        battery/temperature: 15
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 1069
+        weather/cloud-coverage-percentage: 95
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 3
+        weather/temperature-in-celsius: 17
+        weather/visibility-in-meters: 1688
+        weather/wind-direction-in-degrees: 192
+        weather/wind-speed-in-kmh: 4
+        grid/bio-percentage: 3
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 0
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: 0
+        grid/gas-percentage: 1
+        grid/geothermal-percentage: 4
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 0
+        charging-station/cable-efficency: 0.92
+        charging-station/converter-efficiency: 0.85
+        charging-station/id: 1
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 1
+        route/expected-efficiency: 0
+        route/id: 0
+        route/segment-current: 0
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 1.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 0
+        route/segment-real-time-speed: 72
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 90
+        vehicle/cable-efficiency: 97
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 23
+        vehicle/fuel-type: electric
+        vehicle/id: 3
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7058000; Aluminum: 1968189; Lithium:
+          139677; Cobalt: 30373; Nickel: 82048; Copper: 166529; Graphite: 101903;
+          Manganese: 16246; RareEarths: 3905; Plastics: 777250; Textiles: 98163; Glass:
+          486065; Rubber: 153946; Electronics: 166618; Fluids: 96558'
+        vehicle/name: EV Delivery 3
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5246; Iron: 39858; Phosphate: 45213;
+          Graphite: 20084; Binder: 1538; ConductiveAdditive: 1253; Electrolyte: 28789;
+          Separator: 1009'
+        battery/amount-charged-mah: 9957
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2482
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 54
+        battery/id: 1
+        battery/max-capacity-mah: 49080
+        battery/max-pack-voltage: 795
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 61
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1218875; Copper: 415405; Steel:
+          298707; Plastics: 77513'
+        battery/temperature: 15
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 1069
+        weather/cloud-coverage-percentage: 95
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 3
+        weather/temperature-in-celsius: 17
+        weather/visibility-in-meters: 1688
+        weather/wind-direction-in-degrees: 192
+        weather/wind-speed-in-kmh: 4
+        grid/bio-percentage: 3
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 0
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: 0
+        grid/gas-percentage: 1
+        grid/geothermal-percentage: 4
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 0
+        charging-station/cable-efficency: 0.92
+        charging-station/converter-efficiency: 0.85
+        charging-station/id: 1
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 1
+        route/expected-efficiency: 0
+        route/id: 1
+        route/segment-current: 1
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 0.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 1
+        route/segment-real-time-speed: 49
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 90
+        vehicle/cable-efficiency: 97
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 23
+        vehicle/fuel-type: electric
+        vehicle/id: 3
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7058000; Aluminum: 1968189; Lithium:
+          139677; Cobalt: 30373; Nickel: 82048; Copper: 166529; Graphite: 101903;
+          Manganese: 16246; RareEarths: 3905; Plastics: 777250; Textiles: 98163; Glass:
+          486065; Rubber: 153946; Electronics: 166618; Fluids: 96558'
+        vehicle/name: EV Delivery 3
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5246; Iron: 39858; Phosphate: 45213;
+          Graphite: 20084; Binder: 1538; ConductiveAdditive: 1253; Electrolyte: 28789;
+          Separator: 1009'
+        battery/amount-charged-mah: 9957
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2482
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 54
+        battery/id: 1
+        battery/max-capacity-mah: 49080
+        battery/max-pack-voltage: 795
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 61
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1218875; Copper: 415405; Steel:
+          298707; Plastics: 77513'
+        battery/temperature: 15
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 1069
+        weather/cloud-coverage-percentage: 95
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 3
+        weather/temperature-in-celsius: 17
+        weather/visibility-in-meters: 1688
+        weather/wind-direction-in-degrees: 192
+        weather/wind-speed-in-kmh: 4
+        grid/bio-percentage: 3
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 0
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: 0
+        grid/gas-percentage: 1
+        grid/geothermal-percentage: 4
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 0
+        charging-station/cable-efficency: 0.92
+        charging-station/converter-efficiency: 0.85
+        charging-station/id: 1
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 1
+        route/expected-efficiency: 0
+        route/id: 2
+        route/segment-current: 2
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 5.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 2
+        route/segment-real-time-speed: 70
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 90
+        vehicle/cable-efficiency: 97
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 23
+        vehicle/fuel-type: electric
+        vehicle/id: 3
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7058000; Aluminum: 1968189; Lithium:
+          139677; Cobalt: 30373; Nickel: 82048; Copper: 166529; Graphite: 101903;
+          Manganese: 16246; RareEarths: 3905; Plastics: 777250; Textiles: 98163; Glass:
+          486065; Rubber: 153946; Electronics: 166618; Fluids: 96558'
+        vehicle/name: EV Delivery 3
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5246; Iron: 39858; Phosphate: 45213;
+          Graphite: 20084; Binder: 1538; ConductiveAdditive: 1253; Electrolyte: 28789;
+          Separator: 1009'
+        battery/amount-charged-mah: 9957
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2482
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 54
+        battery/id: 1
+        battery/max-capacity-mah: 49080
+        battery/max-pack-voltage: 795
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 61
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1218875; Copper: 415405; Steel:
+          298707; Plastics: 77513'
+        battery/temperature: 15
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 1069
+        weather/cloud-coverage-percentage: 95
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 3
+        weather/temperature-in-celsius: 17
+        weather/visibility-in-meters: 1688
+        weather/wind-direction-in-degrees: 192
+        weather/wind-speed-in-kmh: 4
+        grid/bio-percentage: 3
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 0
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: 0
+        grid/gas-percentage: 1
+        grid/geothermal-percentage: 4
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 0
+        charging-station/cable-efficency: 0.9
+        charging-station/converter-efficiency: 0.8
+        charging-station/id: 2
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 2
+        route/expected-efficiency: 0
+        route/id: 0
+        route/segment-current: 0
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 9.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 0
+        route/segment-real-time-speed: 40
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 90
+        vehicle/cable-efficiency: 97
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 23
+        vehicle/fuel-type: electric
+        vehicle/id: 3
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7058000; Aluminum: 1968189; Lithium:
+          139677; Cobalt: 30373; Nickel: 82048; Copper: 166529; Graphite: 101903;
+          Manganese: 16246; RareEarths: 3905; Plastics: 777250; Textiles: 98163; Glass:
+          486065; Rubber: 153946; Electronics: 166618; Fluids: 96558'
+        vehicle/name: EV Delivery 3
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5246; Iron: 39858; Phosphate: 45213;
+          Graphite: 20084; Binder: 1538; ConductiveAdditive: 1253; Electrolyte: 28789;
+          Separator: 1009'
+        battery/amount-charged-mah: 9957
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2482
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 54
+        battery/id: 1
+        battery/max-capacity-mah: 49080
+        battery/max-pack-voltage: 795
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 61
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1218875; Copper: 415405; Steel:
+          298707; Plastics: 77513'
+        battery/temperature: 15
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 1069
+        weather/cloud-coverage-percentage: 95
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 3
+        weather/temperature-in-celsius: 17
+        weather/visibility-in-meters: 1688
+        weather/wind-direction-in-degrees: 192
+        weather/wind-speed-in-kmh: 4
+        grid/bio-percentage: 3
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 0
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: 0
+        grid/gas-percentage: 1
+        grid/geothermal-percentage: 4
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 0
+        charging-station/cable-efficency: 0.9
+        charging-station/converter-efficiency: 0.8
+        charging-station/id: 2
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 2
+        route/expected-efficiency: 0
+        route/id: 1
+        route/segment-current: 1
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 9.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 1
+        route/segment-real-time-speed: 75
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        vehicle/battery-type: LithiumIronPhosphate
+        vehicle/converter-efficiency: 90
+        vehicle/cable-efficiency: 97
+        vehicle/emissions-factor-g-co2e-per-unit: 0
+        vehicle/emissions-factor-g-co2e-unit: kg
+        vehicle/embodied-carbon-g-co2e: 0
+        vehicle/expected-lifespan-in-years: 23
+        vehicle/fuel-type: electric
+        vehicle/id: 3
+        vehicle/kwh-per-km: 0
+        vehicle/manufacturer: EVD
+        vehicle/materials-breakdown: 'Steel: 7058000; Aluminum: 1968189; Lithium:
+          139677; Cobalt: 30373; Nickel: 82048; Copper: 166529; Graphite: 101903;
+          Manganese: 16246; RareEarths: 3905; Plastics: 777250; Textiles: 98163; Glass:
+          486065; Rubber: 153946; Electronics: 166618; Fluids: 96558'
+        vehicle/name: EV Delivery 3
+        vehicle/resource-depletion-water-m3: 0
+        vehicle/suggested-maintenance-interval-in-days: 90
+        vehicle/type: van
+        vehicle/weigth: 6000
+        vehicle/weigth-unit: kg
+        battery/active-cell-materials: 'Lithium: 5246; Iron: 39858; Phosphate: 45213;
+          Graphite: 20084; Binder: 1538; ConductiveAdditive: 1253; Electrolyte: 28789;
+          Separator: 1009'
+        battery/amount-charged-mah: 9957
+        battery/battery-efficiency: 0
+        battery/charge-cycle: 2482
+        battery/chemistry: LFP
+        battery/current-soc: 100
+        battery/direct-carbon-emissions: 0
+        battery/efficiency: 92
+        battery/energy-efficiency-lost-power-kwh: 0
+        battery/expected-charging-delay-in-minutes: 0
+        battery/expected-efficiency: 0
+        battery/expected-life-span-in-years: 12
+        battery/expected-percentage-renewable-energy: 54
+        battery/id: 1
+        battery/max-capacity-mah: 49080
+        battery/max-pack-voltage: 795
+        battery/percentage-current-is-renewable: 0
+        battery/production-location: South Korea
+        battery/soc-start: 61
+        battery/soh: 0
+        battery/soh-after-charge: 0
+        battery/state: charging
+        battery/structural-components: 'Aluminum: 1218875; Copper: 415405; Steel:
+          298707; Plastics: 77513'
+        battery/temperature: 15
+        battery/temperature-unit: celcius
+        weather/air-pressure-in-hectopascal: 1069
+        weather/cloud-coverage-percentage: 95
+        weather/id: 1
+        weather/latitude: 1
+        weather/longitude: 1
+        weather/radius-in-meters: 0
+        weather/rainfall-in-millimeter: 3
+        weather/temperature-in-celsius: 17
+        weather/visibility-in-meters: 1688
+        weather/wind-direction-in-degrees: 192
+        weather/wind-speed-in-kmh: 4
+        grid/bio-percentage: 3
+        grid/carbon-average-renewable-energy-percentage: 0
+        grid/carbon-intensity-g-co2e-per-kwh: 0
+        grid/coal-bituminous-percentage: 0
+        grid/coal-lignite-percentage: 0
+        grid/coal-sub-bituminous-percentage: 0
+        grid/gas-percentage: 1
+        grid/geothermal-percentage: 4
+        grid/hydro-percentage: 0
+        grid/id: 1
+        grid/nuclear-percentage: 1
+        grid/oil-percentage: 1
+        grid/solar-percentage: 0
+        grid/wind-percentage: 0
+        charging-station/cable-efficency: 0.9
+        charging-station/converter-efficiency: 0.8
+        charging-station/id: 2
+        charging-station/location-lat: 1
+        charging-station/location-lng: 1
+        charging-station/type: 2
+        route/expected-efficiency: 0
+        route/id: 2
+        route/segment-current: 2
+        route/segment-current-road-type: highway
+        route/segment-current-weight: 1000
+        route/segment-distance: 3.1
+        route/segment-distance-unit: km
+        route/segment-end-location-lat: 52.9244
+        route/segment-end-location-lng: 5.09
+        route/segment-id: 2
+        route/segment-real-time-speed: 70
+        route/segment-real-time-speed-unit: kmh
+        route/segment-start-location-lat: 52.3792
+        route/segment-start-location-lng: 6.9003
+        route/segment-total-count: 3
+        package/delivery-location-lat: 1
+        package/delivery-location-lng: 1
+        package/delivery-location-state: in-transit
+        package/delivery-time-per-package: 30
+        package/embodiedcarbon: 0
+        package/id: 0
+        package/volume: 1000
+        package/weight: 10

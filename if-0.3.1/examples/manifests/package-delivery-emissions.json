@@ -1,0 +1,129 @@
+{
+  "name": "package-delivery-emissions",
+  "description": "simple demo package-delivery-emissions",
+  "tags": null,
+  "initialize": {
+    "plugins": {
+      "package-delivery-emissions": {
+        "method": "PackageDeliveryEmissions",
+        "path": "@grnsft/if-unofficial-plugins",
+        "global-config": {
+          "options": {
+            "optionPlaceHolder": 0.6
+          }
+        }
+      }
+    }
+  },
+  "tree": {
+    "children": {
+      "child": {
+        "pipeline": [
+          "package-delivery-emissions"
+        ],
+        "defaults": {
+          "grid/carbon-average-renewable-energy-percentage": 13
+        },
+        "inputs": [
+          {
+            "timestamp": "2023-12-12T00:00:00.000Z",
+
+            "route/id": 1,
+            "route/segment-id": 23,
+            "route/segment-current": 1,
+            "route/segment-current-weight": 1000,
+            "route/segment-current-road-type": "highway",
+            "route/segment-distance": 50,
+            "route/segment-distance-unit": "km",
+            "route/segment-end-location-lat": 52.9244,
+            "route/segment-end-location-lng": 5.09,
+            "route/segment-real-time-speed": 70,
+            "route/segment-real-time-speed-unit": "km/h",
+            "route/segment-start-location-lat": 52.3792,
+            "route/segment-start-location-lng": 6.9003,
+            "route/segment-total-count": 1,
+
+            "package/id": 1,
+            "package/volume": 50,
+            "package/weight": 10,
+            "package/delivery-location-lat": 51.5074,
+            "package/delivery-location-lng": 0.1278,
+            "package/delivery-location-state": "in-transit",
+            "package/delivery-location-delivery-time-per-package": 30,
+
+            "battery/active-cell-materials": "Lithium: 4782; Graphite: 19530; RareEarths: 3949",
+            "battery/amount-charged-mah": 9911,
+            "battery/battery-efficiency": 98,
+            "battery/charge-cycle": 2952,
+            "battery/chemistry": "TeslaNewest",
+            "battery/current-soc": 80,
+            "battery/direct-carbon-emissions": 0,
+            "battery/efficiency": 98,
+            "battery/energy-efficiency-lost-power-kwh": 10,
+            "battery/expected-charging-delay-in-minutes": 1,
+            "battery/expected-efficiency": 97,
+            "battery/expected-life-span-in-years": 8,
+            "battery/expected-percentage-renewable-energy": 75,
+            "battery/id": 1,
+            "battery/max-capacity-mah": 49123,
+            "battery/max-pack-voltage": 798,
+            "battery/percentage-current-is-renewable": 60,
+            "battery/production-location": "China",
+            "battery/soc-start": 84,
+            "battery/soh": 98,
+            "battery/soh-after-charge": 98,
+            "battery/state": "idle",
+            "battery/structural-components": "Aluminum: 1202234; Copper: 404827; Steel: 309427; Plastics: 76744",
+            "battery/temperature": 20,
+            "battery/temperature-unit": "celsius",
+
+            "vehicle/battery-type": "LFP",
+            "vehicle/converter-efficiency": 91,
+            "vehicle/cable-efficiency": 88,
+            "vehicle/emissions-factor-g-co2e-per-unit": 0,
+            "vehicle/emissions-factor-g-co2e-unit": "kg",
+            "vehicle/embodied-carbon-g-co2e": 0,
+            "vehicle/expected-lifespan-in-years": 20,
+            "vehicle/fuel-type": "electric",
+            "vehicle/id": 1,
+            "vehicle/kwh-per-km": 0.15,
+            "vehicle/manufacturer": "EVEletric",
+            "vehicle/materials-breakdown": "Aluminum: 1202234; Copper: 404827; Steel: 309427; Plastics: 76744; Lithium: 133469; Graphite: 96257; RareEarths: 3949; Glass: 499641; Rubber: 162123; Electronics: 163668; Fluids: 102662",
+            "vehicle/name": "EV Van 1",
+            "vehicle/resource-depletion-water-m3": 0,
+            "vehicle/suggested-maintenance-interval-in-days": 90,
+            "vehicle/type": "van",
+            "vehicle/weight": 6000,
+            "vehicle/weight-unit": "kg",
+
+            "grid/id": 1,
+            "grid/bio-percentage": 4,
+            "grid/carbon-intensity-g-co2e-per-kwh": 1,
+            "grid/coal-bituminous-percentage": 0,
+            "grid/coal-sub-bituminous-percentage": 0,
+            "grid/coal-lignite-percentage": 0,
+            "grid/gas-percentage": 5,
+            "grid/geothermal-percentage": 0,
+            "grid/hydro-percentage": 0,
+            "grid/nuclear-percentage": 20,
+            "grid/oil-percentage": 10,
+            "grid/solar-percentage": 20,
+            "grid/wind-percentage": 40,
+
+            "weather/id": 1,
+            "weather/latitude": 51.5074,
+            "weather/longitude": -0.1278,
+            "weather/radius-in-meters": 1000,
+            "weather/temperature-in-celsius": 15,
+            "weather/rainfall-in-millimeter": 0,
+            "weather/wind-speed-in-kmh": 25,
+            "weather/wind-direction-in-degrees": 90,
+            "weather/cloud-coverage-percentage": 5,
+            "weather/visibility-in-meters": 1000,
+            "weather/air-pressure-in-hectopascal": 1013
+          }
+        ]
+      }
+    }
+  }
+}

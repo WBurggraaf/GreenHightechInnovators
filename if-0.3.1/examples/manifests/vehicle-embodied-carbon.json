@@ -1,0 +1,198 @@
+{
+  "name": "vehicle-embodied-carbon",
+  "description": "Calculates the embodied carbon emissions associated with a vehicle's production.",
+  "tags": null,
+  "initialize": {
+    "plugins": {
+      "vehicle-embodied-carbon": {
+        "method": "VehicleEmbodiedCarbon",
+        "path": "@grnsft/if-unofficial-plugins",
+        "global-config": {
+          "emissionsFactors": {
+            "Lithium": 16,
+            "Iron": 2,
+            "Phosphate": 4,
+            "Graphite": 5.5,
+            "Binder": 3,
+            "ConductiveAdditive": 4,
+            "Electrolyte": 5,
+            "Separator": 3,
+            "Steel": 2.1,
+            "Aluminum": 10,
+            "Copper": 3,
+            "Plastics": 2.3,
+            "Glass": 1.8,
+            "Rubber": 4,
+            "RareEarths": 15,
+            "Electronics": 6,
+            "Textiles": 4,
+            "Fluids": 3,
+            "SpecializedAlloys": 5
+          },
+          "waterUsageFactors": {
+            "Lithium": 25000,
+            "Iron": 50,
+            "Phosphate": 800,
+            "Graphite": 2000,
+            "Binder": 500,
+            "ConductiveAdditive": 300,
+            "Electrolyte": 200,
+            "Separator": 300,
+            "Steel": 60,
+            "Aluminum": 200,
+            "Copper": 70,
+            "Plastics": 500,
+            "Glass": 1500,
+            "Rubber": 800,
+            "RareEarths": 4000,
+            "Electronics": 1500,
+            "Textiles": 1000,
+            "Fluids": 100,
+            "SpecializedAlloys": 300
+          },
+          "wasteFactors": {
+            "Lithium": {
+              "manufacturing": 0.35,
+              "endOfLife": 0.05
+            },
+            "Iron": {
+              "manufacturing": 0.15,
+              "endOfLife": 0.1
+            },
+            "Phosphate": {
+              "manufacturing": 0.4,
+              "endOfLife": 0.05
+            },
+            "Graphite": {
+              "manufacturing": 0.55,
+              "endOfLife": 0.06
+            },
+            "Binder": {
+              "manufacturing": 0.3,
+              "endOfLife": 0.2
+            },
+            "ConductiveAdditive": {
+              "manufacturing": 0.2,
+              "endOfLife": 0.1
+            },
+            "Electrolyte": {
+              "manufacturing": 0.3,
+              "endOfLife": 0.1
+            },
+            "Separator": {
+              "manufacturing": 0.3,
+              "endOfLife": 0.2
+            },
+            "Steel": {
+              "manufacturing": 0.2,
+              "endOfLife": 0.1
+            },
+            "Aluminum": {
+              "manufacturing": 0.12,
+              "endOfLife": 0.12
+            },
+            "Copper": {
+              "manufacturing": 0.15,
+              "endOfLife": 0.01
+            },
+            "Plastics": {
+              "manufacturing": 0.8,
+              "endOfLife": 0.3
+            },
+            "Glass": {
+              "manufacturing": 0.7,
+              "endOfLife": 0.1
+            },
+            "Rubber": {
+              "manufacturing": 0.4,
+              "endOfLife": 0.2
+            },
+            "RareEarths": {
+              "manufacturing": 0.5,
+              "endOfLife": 0.03
+            },
+            "Electronics": {
+              "manufacturing": 0.3,
+              "endOfLife": 0.2
+            },
+            "Textiles": {
+              "manufacturing": 0.3,
+              "endOfLife": 0.4
+            },
+            "Fluids": {
+              "manufacturing": 0.1,
+              "endOfLife": 0.3
+            },
+            "SpecializedAlloys": {
+              "manufacturing": 0.3,
+              "endOfLife": 0.2
+            }
+          },
+          "options": {
+            "optionPlaceHolder": 0.6
+          }
+        }
+      }
+    }
+  },
+  "tree": {
+    "children": {
+      "child": {
+        "pipeline": [
+          "vehicle-embodied-carbon"
+        ],
+        "config": null,
+        "inputs": [
+          {
+            "timestamp": "2024-04-06T00:00:00.0000",
+
+            "vehicle/battery-type": "LFP",
+            "vehicle/converter-efficiency": 91,
+            "vehicle/cable-efficiency": 88,
+            "vehicle/emissions-factor-g-co2e-per-unit": 0,
+            "vehicle/emissions-factor-g-co2e-unit": "kg",
+            "vehicle/embodied-carbon-g-co2e": 0,
+            "vehicle/expected-lifespan-in-years": 20,
+            "vehicle/fuel-type": "electric",
+            "vehicle/id": 1,
+            "vehicle/kwh-per-km": 0.15,
+            "vehicle/manufacturer": "EVEletric",
+            "vehicle/materials-breakdown": "Aluminum: 1202234; Copper: 404827; Steel: 309427; Plastics: 76744; Lithium: 133469; Graphite: 96257; RareEarths: 3949; Glass: 499641; Rubber: 162123; Electronics: 163668; Fluids: 102662",
+            "vehicle/name": "EV Van 1",
+            "vehicle/resource-depletion-water-m3": 0,
+            "vehicle/suggested-maintenance-interval-in-days": 90,
+            "vehicle/type": "van",
+            "vehicle/weight": 6000,
+            "vehicle/weight-unit": "kg",
+        
+            "battery/active-cell-materials": "Lithium: 4782; Graphite: 19530; RareEarths: 3949",
+            "battery/amount-charged-mah": 9911,
+            "battery/battery-efficiency": 98,
+            "battery/charge-cycle": 2952,
+            "battery/chemistry": "TeslaNewest",
+            "battery/current-soc": 80,
+            "battery/direct-carbon-emissions": 0,
+            "battery/efficiency": 98,
+            "battery/energy-efficiency-lost-power-kwh": 10,
+            "battery/expected-charging-delay-in-minutes": 1,
+            "battery/expected-efficiency": 97,
+            "battery/expected-life-span-in-years": 8,
+            "battery/expected-percentage-renewable-energy": 75,
+            "battery/id": 1,
+            "battery/max-capacity-mah": 49123,
+            "battery/max-pack-voltage": 798,
+            "battery/percentage-current-is-renewable": 60,
+            "battery/production-location": "China",
+            "battery/soc-start": 84,
+            "battery/soh": 98,
+            "battery/soh-after-charge": 98,
+            "battery/state": "charging",
+            "battery/structural-components": "Aluminum: 1202234; Copper: 404827; Steel: 309427; Plastics: 76744",
+            "battery/temperature": 20,
+            "battery/temperature-unit": "celsius"
+          }
+        ]
+      }
+    }
+  }
+}

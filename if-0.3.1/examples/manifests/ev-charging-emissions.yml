@@ -1,0 +1,88 @@
+name: ev-charging-emissions
+description: simple demo ev-charging-emissions
+tags: 
+initialize:
+  plugins:
+    ev-charging-emissions:
+      method: EvChargingEmissions
+      path: "@grnsft/if-unofficial-plugins"
+      global-config:
+        options:
+          averageRenewableEnergyPercentageGrid: 5  # Percentage of energy on the grid sourced from renewable sources (solar, wind, hydro, etc.)
+tree:
+  children:
+    child:
+      pipeline:
+      - ev-charging-emissions
+      defaults:
+        grid/carbon-average-renewable-energy-percentage: 13
+      inputs:
+      - timestamp: '2023-12-12T00:00:00.000Z'
+
+        # Battery-specific parameters
+        battery/active-cell-materials: 'Lithium: 4782; Graphite: 19530; RareEarths: 3949'  # Materials within the battery cells 
+        battery/amount-charged-mah: 9911  # Needs context of full battery capacity
+        battery/battery-efficiency: 98  # Excellent efficiency during charge/discharge
+        battery/charge-cycle: 2952  # Number of charge/discharge cycles 
+        battery/chemistry: TeslaNewest  # Likely a proprietary LFP-based Tesla chemistry
+        battery/current-soc: 80  # Current state of charge (%)
+        battery/direct-carbon-emissions: 0  # No emissions during battery use
+        battery/efficiency: 98  # Likely redundant with 'battery-efficiency'
+        battery/energy-efficiency-lost-power-kwh: 10  # Energy lost as heat in this charge
+        battery/expected-charging-delay-in-minutes: 1  # Minimal charging delay
+        battery/expected-efficiency: 97  # Expected slight efficiency decline over time
+        battery/expected-life-span-in-years: 8  # LFP batteries can have longer lifespans 
+        battery/expected-percentage-renewable-energy: 75  # Goal for renewable energy sources
+        battery/id: 1  # Unique battery ID
+        battery/max-capacity-mah: 49123 
+        battery/max-pack-voltage: 798
+        battery/percentage-current-is-renewable: 60 
+        battery/production-location: China 
+        battery/soc-start: 84  # State of charge at the beginning of charging 
+        battery/soh: 98  # State of Health - excellent battery condition
+        battery/soh-after-charge: 98 
+        battery/state: charging 
+        battery/structural-components: 'Aluminum: 1202234; Copper: 404827; Steel: 309427; Plastics: 76744' 
+        battery/temperature: 20  # Battery temperature in Celsius
+        battery/temperature-unit: celsius" 
+
+        grid/id: 1
+        grid/bio-percentage: 4  # A small percentage of energy comes from biomass sources
+        grid/carbon-intensity-g-co2e-per-kwh: 1  # Very low carbon intensity for the grid, indicating a clean mix
+        grid/coal-bituminous-percentage: 0  # No reliance on bituminous coal (a moderately polluting type)
+        grid/coal-sub-bituminous-percentage: 0 # No reliance on sub-bituminous coal (less polluting than bituminous)
+        grid/coal-lignite-percentage: 0  # No reliance on lignite coal (the most polluting type)
+        grid/gas-percentage: 5   # Small reliance on natural gas
+        grid/geothermal-percentage: 0  # No geothermal energy in the current mix
+        grid/hydro-percentage: 0    # No hydropower in the current mix
+        grid/nuclear-percentage: 20  # Significant contribution from nuclear power
+        grid/oil-percentage: 10     # Moderate reliance on oil-based generation 
+        grid/solar-percentage: 20  #  Solar power provides a good portion of the energy
+        grid/wind-percentage: 40   # Wind is the largest contributor to the energy mix 
+
+        # Overall vehicle specifications
+        vehicle/battery-type: LFP  # Lithium Iron Phosphate battery, known for long life and stability
+        vehicle/converter-efficiency: 91  # Excellent efficiency converting energy to motion
+        vehicle/cable-efficiency: 88  # Typical efficiency, some energy loss as heat in the cable
+        vehicle/emissions-factor-g-co2e-per-unit: 0  # No direct tailpipe emissions
+        vehicle/emissions-factor-g-co2e-unit: kg  # Emissions measured in kilograms of CO2 equivalent
+        vehicle/embodied-carbon-g-co2e: 0  # Needs updating - manufacturing has embodied carbon
+        vehicle/expected-lifespan-in-years: 20  # Long lifespan for a logistics van
+        vehicle/fuel-type: electric 
+        vehicle/id: 1  # Unique vehicle ID
+        vehicle/kwh-per-km: 0.15  # Decent energy efficiency for an electric van 
+        vehicle/manufacturer: EVEletric 
+        vehicle/materials-breakdown: 'Aluminum: 1202234; Copper: 404827; Steel: 309427; Plastics: 76744; Lithium: 133469; Graphite: 96257; RareEarths: 3949; Glass: 499641; Rubber: 162123; Electronics: 163668; Fluids: 102662'  # Detailed material composition
+        vehicle/name: EV Van 1
+        vehicle/resource-depletion-water-m3: 0  # Needs updating - water used in manufacturing
+        vehicle/suggested-maintenance-interval-in-days: 90  # EVs typically have lower maintenance 
+        vehicle/type: van 
+        vehicle/weight: 6000  # Total vehicle weight
+        vehicle/weight-unit: kg 
+
+        charging-station/id: 1 # A unique identifier for this charging station
+        charging-station/type: 2  # Specifies the type of charger (likely Level 2 AC charging)
+        charging-station/converter-efficiency: 90 # 90% efficiency in converting AC power to DC for the battery
+        charging-station/cable-efficiency: 99 # Very minimal energy loss (1%) through the charging cable
+        charging-station/location-lat: 51.5074 # Latitude of the charging station's location
+        charging-station/location-lng: -0.1278 # Longitude of the charging station's location

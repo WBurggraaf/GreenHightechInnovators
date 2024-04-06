@@ -1,0 +1,39 @@
+{
+  "name": "sci-demo",
+  "description": "example invoking sci model",
+  "tags": null,
+  "initialize": {
+    "plugins": {
+      "sci": {
+        "kind": "plugin",
+        "method": "Sci",
+        "path": "@grnsft/if-plugins"
+      }
+    }
+  },
+  "tree": {
+    "children": {
+      "child": {
+        "pipeline": [
+          "sci"
+        ],
+        "config": {
+          "sci": {
+            "functional-unit-time": "1 sec",
+            "functional-unit": "requests"
+          }
+        },
+        "inputs": [
+          {
+            "timestamp": "2023-07-06T00:00",
+            "duration": 3600,
+            "energy": 5,
+            "carbon-operational": 5,
+            "carbon-embodied": 0.02,
+            "requests": 100
+          }
+        ]
+      }
+    }
+  }
+}

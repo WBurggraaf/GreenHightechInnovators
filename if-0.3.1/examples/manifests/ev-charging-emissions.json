@@ -1,0 +1,101 @@
+{
+  "name": "ev-charging-emissions",
+  "description": "simple demo ev-charging-emissions",
+  "tags": null,
+  "initialize": {
+    "plugins": {
+      "ev-charging-emissions": {
+        "method": "EvChargingEmissions",
+        "path": "@grnsft/if-unofficial-plugins",
+        "global-config": {
+          "options": {
+            "averageRenewableEnergyPercentageGrid": 5
+          }
+        }
+      }
+    }
+  },
+  "tree": {
+    "children": {
+      "child": {
+        "pipeline": [
+          "ev-charging-emissions"
+        ],
+        "defaults": {
+          "grid/carbon-average-renewable-energy-percentage": 13
+        },
+        "inputs": [
+          {
+            "timestamp": "2023-12-12T00:00:00.000Z",
+
+            "battery/active-cell-materials": "Lithium: 4782; Graphite: 19530; RareEarths: 3949",
+            "battery/amount-charged-mah": 9911,
+            "battery/battery-efficiency": 98,
+            "battery/charge-cycle": 2952,
+            "battery/chemistry": "TeslaNewest",
+            "battery/current-soc": 80,
+            "battery/direct-carbon-emissions": 0,
+            "battery/efficiency": 98,
+            "battery/energy-efficiency-lost-power-kwh": 10,
+            "battery/expected-charging-delay-in-minutes": 1,
+            "battery/expected-efficiency": 0.03,
+            "battery/expected-life-span-in-years": 8,
+            "battery/expected-percentage-renewable-energy": 75,
+            "battery/id": 1,
+            "battery/max-capacity-mah": 49123,
+            "battery/max-pack-voltage": 798,
+            "battery/percentage-current-is-renewable": 60,
+            "battery/production-location": "China",
+            "battery/soc-start": 84,
+            "battery/soh": 98,
+            "battery/soh-after-charge": 98,
+            "battery/state": "charging",
+            "battery/structural-components": "Aluminum: 1202234; Copper: 404827; Steel: 309427; Plastics: 76744",
+            "battery/temperature": 20,
+            "battery/temperature-unit": "celsius",
+
+            "grid/id": 1,
+            "grid/bio-percentage": 4,
+            "grid/carbon-intensity-g-co2e-per-kwh": 269440,
+            "grid/coal-bituminous-percentage": 0,
+            "grid/coal-sub-bituminous-percentage": 0,
+            "grid/coal-lignite-percentage": 0,
+            "grid/gas-percentage": 5,
+            "grid/geothermal-percentage": 0,
+            "grid/hydro-percentage": 0,
+            "grid/nuclear-percentage": 20,
+            "grid/oil-percentage": 10,
+            "grid/solar-percentage": 20,
+            "grid/wind-percentage": 40,
+
+            "vehicle/battery-type": "LFP",
+            "vehicle/converter-efficiency": 91,
+            "vehicle/cable-efficiency": 88,
+            "vehicle/emissions-factor-g-co2e-per-unit": 0,
+            "vehicle/emissions-factor-g-co2e-unit": "kg",
+            "vehicle/embodied-carbon-g-co2e": 0,
+            "vehicle/expected-lifespan-in-years": 20,
+            "vehicle/fuel-type": "electric",
+            "vehicle/id": 1,
+            "vehicle/kwh-per-km": 0.15,
+            "vehicle/manufacturer": "EVEletric",
+            "vehicle/materials-breakdown": "Aluminum: 1202234; Copper: 404827; Steel: 309427; Plastics: 76744; Lithium: 133469; Graphite: 96257; RareEarths: 3949; Glass: 499641; Rubber: 162123; Electronics: 163668; Fluids: 102662",
+            "vehicle/name": "EV Van 1",
+            "vehicle/resource-depletion-water-m3": 0,
+            "vehicle/suggested-maintenance-interval-in-days": 90,
+            "vehicle/type": "van",
+            "vehicle/weight": 6000,
+            "vehicle/weight-unit": "kg",
+
+            "charging-station/id": 1,
+            "charging-station/type": 2,
+            "charging-station/converter-efficiency": 90,
+            "charging-station/cable-efficency": 99,
+            "charging-station/location-lat": 51.5074,
+            "charging-station/location-lng": -0.1278
+          }
+        ]
+      }
+    }
+  }
+}

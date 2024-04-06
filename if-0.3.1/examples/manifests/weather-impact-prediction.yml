@@ -1,0 +1,157 @@
+name: weather-impact-prediction
+description: Calculates the embodied carbon emissions associated with a vehicle's
+  production.
+tags: 
+initialize:
+  plugins:
+    weather-impact-prediction:
+      method: WeatherImpactPrediction
+      path: "@grnsft/if-unofficial-plugins"
+      global-config:
+        solarStats:
+          efficiencyMonthlyNorthernHemisphere:
+            january: 0.49  # Low efficiency due to shorter days and lower sun angle in winter
+            february: 0.61   # Increased efficiency as days lengthen and sun angle improves
+            march: 0.75      # Further efficiency gains leading towards spring
+            april: 0.88      # Approaching peak solar efficiency 
+            may: 0.94        # Close to optimal solar production
+            june: 0.99       # Peak solar efficiency during summer solstice
+            july: 1          # Maximum theoretical efficiency under ideal conditions
+            august: 0.94     # Slight efficiency drop as days begin to shorten 
+            september: 0.85  # Noticeable efficiency decline as fall approaches
+            october: 0.68    # Further efficiency drops as sun angle lowers
+            november: 0.53   # Efficiency decreases as days shorten
+            december: 0.43   # Lowest efficiency during winter solstice
+          efficiencyMonthlySouthernHemisphere:
+            january: 1          # Peak efficiency during Southern Hemisphere summer
+            february: 0.94      # Slight drop in efficiency, but still high
+            march: 0.85         # Efficiency remains good as autumn approaches
+            april: 0.68         # Noticeable efficiency decline as days shorten
+            may: 0.53           # Further efficiency drop with the approach of winter
+            june: 0.43          # Lowest efficiency during the winter solstice
+            july: 0.49          # Efficiency begins to increase as days lengthen
+            august: 0.61        # Increased efficiency as spring approaches
+            september: 0.75     # Significant efficiency gains
+            october: 0.88       # Approaching peak efficiency towards summer
+            november: 0.94      # Close to optimal solar production
+            december: 0.99      # Peak efficiency during summer solstice 
+          efficiencyPerHour:
+            '0': 0         # Zero solar output at midnight
+            '1': 0         # Zero output in the very early morning
+            '2': 0         # ...
+            '3': 0         
+            '4': 0         
+            '5': 0         # Minimal output at dawn
+            '6': 0.04      # Gradual increase in efficiency as the sun rises
+            '7': 0.08      # ...
+            '8': 0.14      # ...
+            '9': 0.32      # Noticeable increase in efficiency
+            '10': 0.5      # Significant output approaching midday
+            '11': 0.65     # ...
+            '12': 0.7      # Strong output around midday 
+            '13': 0.85     # Potentially peak output early afternoon
+            '14': 0.91     # ...  
+            '15': 0.8      # Slight decline in efficiency 
+            '16': 0.75     # ...
+            '17': 0.68     # Decreased efficiency as the sun sets
+            '18': 0.33     # ...
+            '19': 0.04     # Minimal output at dusk
+            '20': 0        # Zero output during nighttime 
+            '21': 0        # ...
+            '22': 0        # ...
+            '23': 0        # ...
+            '24': 0        # Zero output at midnight (repeating the cycle)
+        powerSource:
+          solar: 41         # Amount of energy sourced from solar (units need context)
+          wind: 11          # ...  
+          geothermal: 38    # ...
+          hydro: 4          # ...
+          nuclear: 12       # ...
+          bio: 230          # ...
+          oil: 840          # High output from oil, indicating a less sustainable mix
+          gas: 490          # Significant reliance on gas
+          coalBituminous: 740   # ...
+          coalSubBituminous: 1024 # ...
+          coalLignite: 1689     # Largest contribution from the most polluting coal type 
+        options:
+          optionPlaceHolder: 0.6
+tree:
+  children:
+    child:
+      pipeline:
+      - weather-impact-prediction
+      config: 
+      inputs:
+      - timestamp: '2024-03-26T14:28:30.000Z'
+        weather/id: 1
+        weather/latitude: 51.5074  # Location: specifies the location's North-South position (likely London, UK)
+        weather/longitude: -0.1278 # Location: specifies the location's East-West position  (likely London, UK)
+        weather/radius-in-meters: 1000 # Area covered: defines the radius for localized weather data
+        weather/temperature-in-celsius: 15 # Current temperature: 15 degrees Celsius, a mild temperature
+        weather/rainfall-in-millimeter: 0 # Precipitation: currently no rainfall
+        weather/wind-speed-in-kmh: 25  # Wind intensity: moderate wind speed of 25 kilometers per hour
+        weather/wind-direction-in-degrees: 90 # Wind source:  wind blowing from the east (90 degrees)
+        weather/cloud-coverage-percentage: 5 # Sky condition: very few clouds 
+        weather/visibility-in-meters: 1000 # Visual range: good visibility of 1 kilometer
+        weather/air-pressure-in-hectopascal: 1013 # Atmospheric pressure: standard atmospheric pressure
+
+        grid/id: 1
+        grid/bio-percentage: 4  # A small percentage of energy comes from biomass sources
+        grid/carbon-intensity-g-co2e-per-kwh: 1  # Very low carbon intensity for the grid, indicating a clean mix
+        grid/coal-bituminous-percentage: 0  # No reliance on bituminous coal (a moderately polluting type)
+        grid/coal-sub-bituminous-percentage: 0 # No reliance on sub-bituminous coal (less polluting than bituminous)
+        grid/coal-lignite-percentage: 0  # No reliance on lignite coal (the most polluting type)
+        grid/gas-percentage: 5   # Small reliance on natural gas
+        grid/geothermal-percentage: 0  # No geothermal energy in the current mix
+        grid/hydro-percentage: 0    # No hydropower in the current mix
+        grid/nuclear-percentage: 20  # Significant contribution from nuclear power
+        grid/oil-percentage: 10     # Moderate reliance on oil-based generation 
+        grid/solar-percentage: 20  #  Solar power provides a good portion of the energy
+        grid/wind-percentage: 40   # Wind is the largest contributor to the energy mix 
+
+        # Overall vehicle specifications
+        vehicle/battery-type: LFP  # Lithium Iron Phosphate battery, known for long life and stability
+        vehicle/converter-efficiency: 91  # Excellent efficiency converting energy to motion
+        vehicle/cable-efficiency: 88  # Typical efficiency, some energy loss as heat in the cable
+        vehicle/emissions-factor-g-co2e-per-unit: 0  # No direct tailpipe emissions
+        vehicle/emissions-factor-g-co2e-unit: kg  # Emissions measured in kilograms of CO2 equivalent
+        vehicle/embodied-carbon-g-co2e: 0  # Needs updating - manufacturing has embodied carbon
+        vehicle/expected-lifespan-in-years: 20  # Long lifespan for a logistics van
+        vehicle/fuel-type: electric 
+        vehicle/id: 1  # Unique vehicle ID
+        vehicle/kwh-per-km: 0.15  # Decent energy efficiency for an electric van 
+        vehicle/manufacturer: EVEletric 
+        vehicle/materials-breakdown: 'Aluminum: 1202234; Copper: 404827; Steel: 309427; Plastics: 76744; Lithium: 133469; Graphite: 96257; RareEarths: 3949; Glass: 499641; Rubber: 162123; Electronics: 163668; Fluids: 102662'  # Detailed material composition
+        vehicle/name: EV Van 1
+        vehicle/resource-depletion-water-m3: 0  # Needs updating - water used in manufacturing
+        vehicle/suggested-maintenance-interval-in-days: 90  # EVs typically have lower maintenance 
+        vehicle/type: van 
+        vehicle/weight: 6000  # Total vehicle weight
+        vehicle/weight-unit: kg 
+
+        # Battery-specific parameters
+        battery/active-cell-materials: 'Lithium: 4782; Graphite: 19530; RareEarths: 3949'  # Materials within the battery cells 
+        battery/amount-charged-mah: 9911  # Needs context of full battery capacity
+        battery/battery-efficiency: 98  # Excellent efficiency during charge/discharge
+        battery/charge-cycle: 2952  # Number of charge/discharge cycles 
+        battery/chemistry: TeslaNewest  # Likely a proprietary LFP-based Tesla chemistry
+        battery/current-soc: 80  # Current state of charge (%)
+        battery/direct-carbon-emissions: 0  # No emissions during battery use
+        battery/efficiency: 98  # Likely redundant with 'battery-efficiency'
+        battery/energy-efficiency-lost-power-kwh: 10  # Energy lost as heat in this charge
+        battery/expected-charging-delay-in-minutes: 1  # Minimal charging delay
+        battery/expected-efficiency: 97  # Expected slight efficiency decline over time
+        battery/expected-life-span-in-years: 8  # LFP batteries can have longer lifespans 
+        battery/expected-percentage-renewable-energy: 75  # Goal for renewable energy sources
+        battery/id: 1  # Unique battery ID
+        battery/max-capacity-mah: 49123 
+        battery/max-pack-voltage: 798
+        battery/percentage-current-is-renewable: 60 
+        battery/production-location: China 
+        battery/soc-start: 84  # State of charge at the beginning of charging 
+        battery/soh: 98  # State of Health - excellent battery condition
+        battery/soh-after-charge: 98 
+        battery/state: charging 
+        battery/structural-components: 'Aluminum: 1202234; Copper: 404827; Steel: 309427; Plastics: 76744' 
+        battery/temperature: 20  # Battery temperature in Celsius
+        battery/temperature-unit: celsius" 
